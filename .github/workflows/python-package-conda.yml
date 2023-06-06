@@ -22,7 +22,9 @@ jobs:
     - name: Create and activate environment
       run: |
         conda env create -f environment.yml
-        conda run -n myenv bash -c "source activate myenv"
+        echo "source activate myenv" >> $HOME/.bashrc
+        exec bash
+        conda activate myenv
     
     - name: Run tests
       run: pytest
