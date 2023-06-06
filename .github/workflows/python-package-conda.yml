@@ -27,7 +27,8 @@ jobs:
         conda activate myenv
     
     - name: Run tests
-      run: pytest
+      run: |
+        conda run -n myenv pytest
     
     - name: Build artifact
       run: echo "Building artifact..."
