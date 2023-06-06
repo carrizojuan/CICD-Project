@@ -1,0 +1,31 @@
+name: Python Package using Conda
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    - name: Set up Anaconda
+      uses: conda-incubator/setup-miniconda@v2
+      with:
+          auto-activate-base: false
+    
+    - name: Create and activate environment
+      run: |
+        conda env create -f environment.yml
+        conda activate myenv
+    
+    - name: Run tests
+      run: pytest
+    
+    - name: Build artifact
+      run: echo "Building artifact..."
