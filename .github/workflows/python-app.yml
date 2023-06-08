@@ -20,15 +20,7 @@ jobs:
     steps:
     - name: Checking out code from the repository
       uses: actions/checkout@v3
-      
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-        
-    - name: Install dependencies
-      run: pip install -r requirements.txt
-    
+          
     - name: Build Docker image
       run: docker build -t juancru68/flask_app .
       
