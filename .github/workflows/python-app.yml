@@ -20,14 +20,18 @@ jobs:
     steps:
     - name: Checking out code from the repository
       uses: actions/checkout@v3
+          
+    - name: Build Docker image
+      run: docker build -t juancru68/flask_app .
       
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v3
-      with:
-        python-version: "3.10"
-        
-    - name: Install dependencies
-      run: pip install -r requirements.txt
+    - name: Test app with unit tests
+      run: |
+        docker run --rm juancru68/flask_app:latest python src/test_app.py
 
-    - name: Test app with unitTest
-      run: python src/test_app.py
+    - name: Log in to Docker Hub
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: Push Docker image
+      run: docker push juancru68/flask_app
+
+ 
