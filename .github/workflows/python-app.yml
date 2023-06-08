@@ -28,6 +28,18 @@ jobs:
         
     - name: Install dependencies
       run: pip install -r requirements.txt
+    
+    - name: Build Docker image
+      run: docker build -t juancru68/flask_app .
+      
+    - name: Test app with unit tests
+      run: |
+        docker run --rm juancru68/flask_app:latest python src/test_app.py
 
-    - name: Test app with unitTest
-      run: python src/test_app.py
+    - name: Log in to Docker Hub
+      run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      
+    - name: Push Docker image
+      run: docker push juancru68/flask_app
+
+ 
