@@ -10,6 +10,7 @@ on:
 permissions:
       id-token: write
       contents: read
+      
     
 jobs:
   build:
@@ -19,15 +20,21 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    
-    - name: 'Az CLI login'
-      uses: azure/login@v1
+          
+    - name: Azure Login
+      uses: Azure/login@v1.4.6
       with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+        creds:  ${{ secrets.AZURE_CREDENTIALS }}
+        # ClientId of the Azure Service principal created.
+        client-id: ${{ secrets.AZURE_CLIENT_ID }}
+        # TenantId of the Azure Service principal created.
+        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+        # Azure subscriptionId
+        subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+        # Set this value to true to enable Azure PowerShell Login in addition to Az CLI login
+        enable-AzPSSession: true
       
-    
     - uses: azure/docker-login@v1
       with:
         login-server: flaskcontainercarri.azurecr.io
