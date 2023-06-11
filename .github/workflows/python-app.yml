@@ -1,11 +1,15 @@
 # This workflow will install Python dependencies, run tests and lint with a single version of Python
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
 
-name: Build Flask Web App
+name: Build Flask Web Appp
 
 on:
   push:
     branches: [ "main" ]
+
+permissions:
+    id-token: write
+    contents: read
     
 jobs:
   build:
@@ -15,33 +19,36 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-    
-    - name: Login to DockerHub
-      uses: docker/login-action@v1
-      with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
-            
-    - name: Build Docker image
-      run: docker build -t juancru68/flask_app .
-      
-    - name: Test app with unit tests
+          
+    - name: Install Azure cli
       run: |
-        docker run --rm juancru68/flask_app:latest python src/test_app.py
-
-    - name: Push to Docker Hub
-      uses: docker/build-push-action@v1 # Info: https://github.com/docker/build-push-action/tree/releases/v1#tags
+        sudo apt-get install ca-certificates curl apt-transport-https lsb-release gnupg
+        curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/microsoft.gpg > /dev/null
+        AZ_REPO=$(lsb_release -cs)
+        echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | sudo tee /etc/apt/sources.list.d/azure-cli.list
+        sudo apt-get update
+        sudo apt-get install azure-cli
+        
+    - uses: azure/login@v1
       with:
-        username: ${{ secrets.DOCKERHUB_USERNAME }}
-        password: ${{ secrets.DOCKERHUB_PASSWORD }}
-        repository: ${{ secrets.DOCKERHUB_REPOSITORY }}
-        tags: latest
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
       
-    - name: Deploy to Azure Web App Service
-      uses: azure/webapps-deploy@v2
+    - uses: azure/docker-login@v1
       with:
-        app-name: carriwebapp
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        images: juancru68/flask_app:latest
-
+        login-server: flaskcontainercarri.azurecr.io
+        username: ${{ secrets.REGISTRY_USERNAME }}
+        password: ${{ secrets.REGISTRY_PASSWORD }}
+    
+    - run: |
+        docker build . -t flaskcontainercarri.azurecr.io/flask-app:${{ github.sha }}
+        docker push flaskcontainercarri.azurecr.io/flask-app:${{ github.sha }} 
+    
+    - uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'flaskappcarri'
+        images: 'flaskcontainercarri.azurecr.io/flask-app:${{ github.sha }}'
+    
+    - name: Azure logout
+      run: |
+        az logout
  
