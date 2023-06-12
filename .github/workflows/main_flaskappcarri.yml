@@ -60,3 +60,11 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1c91d987716640b29d9e3112acdc2f17 }}
         images: 'flaskcontainercarri.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_2c74be2d87f947a7b973ad08d8aa99a6 }}/flaskcontainercarri.azurecr.io/flask-app:${{ github.sha }}'
+    
+    - name: Send Slack notification
+      uses: 8398a7/actions-slack@v3
+      with:
+        status: ${{ job.status }}
+        text: "El flujo de trabajo de CI/CD se ha ejecutado en el repositorio ${{ github.repository }}"
+        channel: proyecto-ci-cd
+        webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
