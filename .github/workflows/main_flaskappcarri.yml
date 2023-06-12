@@ -26,9 +26,7 @@ jobs:
 
     - name: Test app
       run: python src/test_app.py
-      env:
-        TEST_RESULT: ${{ job.status }}
-    
+      
     - name: Send Slack notification
       if: ${{ failure() }}
       uses: rtCamp/action-slack-notify@v2
@@ -88,4 +86,26 @@ jobs:
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1c91d987716640b29d9e3112acdc2f17 }}
         images: 'flaskcontainercarri.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_2c74be2d87f947a7b973ad08d8aa99a6 }}/flaskcontainercarri.azurecr.io/flask-app:${{ github.sha }}'
     
-
+    - name: Send Slack notification
+      if: ${{ failure() }}
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: proyecto-ci-cd
+        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Test Results for ${{ github.repository }} Commit: ${{ github.sha }} --> Test fallido }}'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+      
+    - name: Send Slack notification
+      if: ${{ success() }}
+      uses: rtCamp/action-slack-notify@v2
+      env:
+        SLACK_CHANNEL: proyecto-ci-cd
+        SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
+        SLACK_ICON: https://github.com/rtCamp.png?size=48
+        SLACK_MESSAGE: 'Test Results for ${{ github.repository }} Commit: ${{ github.sha }} --> Test exitoso }}'
+        SLACK_TITLE: Post Title
+        SLACK_USERNAME: rtCamp
+        SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
