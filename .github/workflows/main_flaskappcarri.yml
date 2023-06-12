@@ -31,6 +31,10 @@ jobs:
       uses: rtCamp/action-slack-notify@v2
       env:
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
+      with:
+        args: |
+          --channel=proyecto-ci-cd
+          --message="Test Results:\nRepository: ${{ github.repository }}\nCommit: ${{ github.sha }}\nStatus: ${{ job.status }}"
   
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
