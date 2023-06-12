@@ -65,6 +65,7 @@ jobs:
       uses: 8398a7/actions-slack@v3
       with:
         status: ${{ job.status }}
-        text: "El flujo de trabajo de CI/CD se ha ejecutado en el repositorio ${{ github.repository }}"
-        channel: proyecto-ci-cd
-        webhook_url: ${{ secrets.SLACK_WEBHOOK_URL }}
+        fields: repo,message,commit,author,action,eventName,ref,workflow,job,took,pullRequest
+      env: 
+         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }} # required
+      if: always() # Pick up events even if the job fails or is canceled.
