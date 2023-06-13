@@ -34,8 +34,8 @@ jobs:
         SLACK_CHANNEL: proyecto-ci-cd
         SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
         SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: 'Test Results for ${{ github.repository }} Commit: ${{ github.sha }} --> Test fallido }}'
-        SLACK_TITLE: Post Title
+        SLACK_MESSAGE: 'Fallido'
+        SLACK_TITLE: Resultado Pruebas Unitarias
         SLACK_USERNAME: rtCamp
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
       
@@ -46,8 +46,8 @@ jobs:
         SLACK_CHANNEL: proyecto-ci-cd
         SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
         SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: 'Test Results for ${{ github.repository }} Commit: ${{ github.sha }} --> Test exitoso }}'
-        SLACK_TITLE: Post Title
+        SLACK_MESSAGE: 'Exitoso'
+        SLACK_TITLE: Resultado Pruebas Unitarias
         SLACK_USERNAME: rtCamp
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
       
@@ -93,8 +93,8 @@ jobs:
         SLACK_CHANNEL: proyecto-ci-cd
         SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
         SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: 'Test Results for ${{ github.repository }} Commit: ${{ github.sha }} --> Test fallido }}'
-        SLACK_TITLE: Post Title
+        SLACK_MESSAGE: 'Fallido'
+        SLACK_TITLE: Resultado Implementacion
         SLACK_USERNAME: rtCamp
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
       
@@ -105,7 +105,7 @@ jobs:
         SLACK_CHANNEL: proyecto-ci-cd
         SLACK_COLOR: ${{ job.status }} # or a specific color like 'good' or '#ff00ff'
         SLACK_ICON: https://github.com/rtCamp.png?size=48
-        SLACK_MESSAGE: 'Test Results for ${{ github.repository }} Commit: ${{ github.sha }} --> Test exitoso }}'
-        SLACK_TITLE: Post Title
+        SLACK_MESSAGE: 'Exitoso'
+        SLACK_TITLE: Resultado Implementacion
         SLACK_USERNAME: rtCamp
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_URL }}
