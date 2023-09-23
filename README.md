@@ -2,7 +2,7 @@
 Projecto con fines practicos para simular el workflow que existe en un desarrollo con Integracion y Entrega continua
 
 ## Arquitectura
-![Arquitectura]('Arquitectura.png')
+![Arquitectura](Arquitectura.png)
 
 ## Tecnologias
 ![Git](https://img.shields.io/badge/git-00000?style=for-the-badge&logo=git&color=white)
